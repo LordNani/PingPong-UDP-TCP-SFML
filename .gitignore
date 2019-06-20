@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+.vs/PingPong/v16/.suo
+.vs/PingPong/v16/Browse.VC.db
+.vs/PingPong/v16/Browse.VC.opendb
+.vs/PingPong/v16/ipch/AutoPCH/9d88863011567ebe/MAIN.ipch
