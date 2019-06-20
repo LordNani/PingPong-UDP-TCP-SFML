@@ -9,12 +9,12 @@
 enum Nodemode : char { SERVER = 's', CLIENT = 'c' };
 // sf::RenderWindow window(sf::VideoMode(800, 600), "ping?pong!",
 //                        sf::Style::Default);
- //sf::IpAddress hostIp = sf::IpAddress("25.63.232.166");
+// sf::IpAddress hostIp = sf::IpAddress("25.63.232.166");
 sf::IpAddress hostIp = sf::IpAddress::getLocalAddress();
 sf::TcpSocket tcpSocket;
 uint16_t port = 66000;
 std::size_t received;
-std::string recMsg;
+std::string recMsg = "Connection established SUCCESFULLY";
 std::string msg;
 std::istream &operator>>(std::istream &is, Nodemode &i);
 std::ostream &operator<<(std::ostream &out, const Nodemode value);
@@ -41,14 +41,15 @@ int main() {
 
   std::cout << "Current IP-address: " << hostIp.toString() << std::endl;
   std::cout << "Node state: " << nodestate << std::endl;
-
+  std::cout << recMsg << std::endl;
   secondThread.launch();
   while (msg != "stop") {
 
     sf::Packet packet2;
     if (tcpSocket.receive(packet2) != sf::Socket::NotReady) {
-		packet2 >> recMsg;
-      std::cout << "Other user: " << recMsg << std::endl;
+      packet2 >> recMsg;
+      if (recMsg != "")
+        std::cout << "Other user: " << recMsg << std::endl;
     }
   }
   /* while (window.isOpen()) {
@@ -69,7 +70,6 @@ int main() {
    } */
   return 0;
 }
-
 
 // void pause() {
 //	while(paused){
@@ -102,11 +102,10 @@ std::ostream &operator<<(std::ostream &out, const Nodemode value) {
 
 void sendData(std::string msg) {
   while (msg != "stop") {
-    
-	getline(std::cin, msg);
+    getline(std::cin, msg);
     sf::Packet packet;
     packet << msg;
-	
+
     tcpSocket.send(packet);
   }
 }
