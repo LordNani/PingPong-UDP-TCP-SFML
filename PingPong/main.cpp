@@ -7,7 +7,8 @@
 #include <vector>
 using namespace std;
 enum Nodemode : char { SERVER = 's', CLIENT = 'c' };
-sf::IpAddress hostIp = sf::IpAddress::getLocalAddress();
+sf::IpAddress hostIp = sf::IpAddress("25.63.232.166");
+sf::IpAddress clientIp = sf::IpAddress("25.64.235.153");
 sf::UdpSocket udpSocket;
 unsigned short port = 51234;
 string recMsg = "UDP-BASED CONNECTION ESTABLISHED";
@@ -29,7 +30,6 @@ int main() {
   if (nodestate == SERVER) {
 	  
   } else if (nodestate == CLIENT) {
-	  port++;
   }
 
   udpSocket.bind(port);
@@ -43,9 +43,10 @@ int main() {
   
   while (msg != "stop") {
 	  sf::IpAddress tempIp = hostIp;
+	  sf::IpAddress tempIp2 = clientIp;
 	  unsigned short tempPort = port;
 	  if (nodestate == SERVER) {
-		  if (udpSocket.receive(packet2, tempIp, tempPort) != sf::Socket::Done)
+		  if (udpSocket.receive(packet2, tempIp2, tempPort) != sf::Socket::Done)
 			  cout << "~~error receiving data" << endl;
 		  else {
 			  cout << "--data received" << endl;
@@ -96,12 +97,12 @@ void sendData(string msg) {
     sf::Packet packet;
     packet << msg;
 	if (nodestate == SERVER) {
-		if (udpSocket.send(packet, hostIp, port +1) != sf::Socket::Done)
+		if (udpSocket.send(packet, clientIp, port) != sf::Socket::Done)
 			std::cout << "~~Could not send data" << std::endl;
 		else
 			cout << "--Data sent" << endl;
 	}else 	if (nodestate == CLIENT) {
-		if (udpSocket.send(packet, hostIp, port -1) != sf::Socket::Done)
+		if (udpSocket.send(packet, hostIp, port) != sf::Socket::Done)
 			std::cout << "~~Could not send data" << std::endl;
 		else
 			cout << "--Data sent" << endl;
