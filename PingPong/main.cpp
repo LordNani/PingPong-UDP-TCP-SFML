@@ -5,50 +5,66 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
-
+using namespace std;
 enum Nodemode : char { SERVER = 's', CLIENT = 'c' };
 sf::IpAddress hostIp = sf::IpAddress::getLocalAddress();
 sf::UdpSocket udpSocket;
-uint16_t port = 51234;
-std::string recMsg = "";
-std::string msg;
-
-std::istream &operator>>(std::istream &is, Nodemode &i);
-std::ostream &operator<<(std::ostream &out, const Nodemode value);
-
-void sendData(std::string msg);
+unsigned short port = 51234;
+string recMsg = "UDP-BASED CONNECTION ESTABLISHED";
+string msg;
+istream &operator>>(istream &is, Nodemode &i);
+ostream &operator<<(ostream &out, const Nodemode value);
+void sendData(string msg);
 Nodemode nodestate;
 sf::Thread secondThread(&sendData, msg);
+sf::Packet packet2;
+sf::Packet packet;
+// void pause();
+// bool paused = false;
 
 int main() {
-
-  std::cout << "Type 's' for server, and 'c' for client. If you want to close "
-               "the app, type in 'stop' "
-            << std::endl;
-  std::cin >> nodestate;
+  cout << "Type 's' for server, and 'c' for client. If you want to close "
+          "the app, type in 'stop' "
+       << endl;
+  cin >> nodestate;
 
   if (nodestate == SERVER) {
-	  udpSocket.bind(port);
+	  
   } else if (nodestate == CLIENT) {
-	  udpSocket.bind(port);
+	  port++;
   }
 
-  std::cout << "Current IP-address: " << hostIp.toString() << std::endl;
-  std::cout << "Node state: " << nodestate << std::endl;
-  std::cout << recMsg << std::endl;
+  udpSocket.bind(port);
+
+  cout << "IP-address: " << hostIp.toString() << endl;
+  cout << "Port: " << port << endl;
+  cout << "Node state: " << nodestate << endl;
+
 
   secondThread.launch();
+  
   while (msg != "stop") {
-
-    sf::Packet packet2;
-	if (udpSocket.receive(packet2, hostIp, port) != sf::Socket::Done)
-		std::cout << "~~error receiving data" << std::endl;
-	else {
-		std::cout << "--data received" << std::endl;
-		packet2 >> recMsg;
-		if (recMsg != "")
-			std::cout << "Other user: " << recMsg << std::endl;
-	}
+	  sf::IpAddress tempIp = hostIp;
+	  unsigned short tempPort = port;
+	  if (nodestate == SERVER) {
+		  if (udpSocket.receive(packet2, tempIp, tempPort) != sf::Socket::Done)
+			  cout << "~~error receiving data" << endl;
+		  else {
+			  cout << "--data received" << endl;
+			  packet2 >> recMsg;
+			  if (recMsg != "")
+				  cout << "Other user: " << recMsg << endl;
+		  }
+	  }	else   if (nodestate == CLIENT) {
+		  if (udpSocket.receive(packet2, tempIp, tempPort) != sf::Socket::Done)
+			  cout << "~~error receiving data" << endl;
+		  else {
+			  cout << "--data received" << endl;
+			  packet2 >> recMsg;
+			  if (recMsg != "")
+				  cout << "Other user: " << recMsg << endl;
+		  }
+	  }
   }
   return 0;
 }
@@ -60,8 +76,8 @@ std::istream &operator>>(std::istream &is, Nodemode &i) {
   return is;
 }
 
-std::ostream &operator<<(std::ostream &out, const Nodemode value) {
-  static std::map<Nodemode, std::string> strings;
+ostream &operator<<(ostream &out, const Nodemode value) {
+  static map<Nodemode, string> strings;
   if (strings.size() == 0) {
 #define INSERT_ELEMENT(p) strings[p] = #p
     INSERT_ELEMENT(SERVER);
@@ -71,14 +87,26 @@ std::ostream &operator<<(std::ostream &out, const Nodemode value) {
   return out << strings[value];
 }
 
-void sendData(std::string msg) {
-  while (msg != "stop") {
+void sendData(string msg) {
 
+  while (msg != "stop") {
     getline(std::cin, msg);
+	if (msg == "info") {
+		cout << "IP-address: " << hostIp.toString() << endl;
+		cout << "Port: " << port << endl;
+	}
     sf::Packet packet;
     packet << msg;
-
-	if (udpSocket.send(packet, hostIp, port) != sf::Socket::Done)
-		std::cout << "~~Could not send data" << std::endl;
+	if (nodestate == SERVER) {
+		if (udpSocket.send(packet, hostIp, port +1) != sf::Socket::Done)
+			std::cout << "~~Could not send data" << std::endl;
+		else
+			cout << "--Data sent" << endl;
+	}else 	if (nodestate == CLIENT) {
+		if (udpSocket.send(packet, hostIp, port -1) != sf::Socket::Done)
+			std::cout << "~~Could not send data" << std::endl;
+		else
+			cout << "--Data sent" << endl;
+	}
   }
 }

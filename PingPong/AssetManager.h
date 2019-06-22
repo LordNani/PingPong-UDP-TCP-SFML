@@ -6,10 +6,10 @@
 //public:
 //	AssetManager() {}
 //	~AssetManager() {}
-//	void LoadTexture(std::string, std::string fileName);
-//	sf::Texture& GetTexture(std::string textureName);
+//	void LoadTexture(string, string fileName);
+//	sf::Texture& GetTexture(string textureName);
 //
-//	void LoadTexture(std::string, std::string fileName);
-//	sf::Texture& GetTexture(std::string textureName);
+//	void LoadTexture(string, string fileName);
+//	sf::Texture& GetTexture(string textureName);
 //};
 //
