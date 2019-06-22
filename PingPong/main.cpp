@@ -7,6 +7,7 @@
 #include <vector>
 
 enum Nodemode : char { SERVER = 's', CLIENT = 'c' };
+
 // sf::RenderWindow window(sf::VideoMode(800, 600), "ping?pong!",
 //                        sf::Style::Default);
 // sf::IpAddress hostIp = sf::IpAddress("25.63.232.166");
@@ -19,9 +20,8 @@ std::string msg;
 std::istream &operator>>(std::istream &is, Nodemode &i);
 std::ostream &operator<<(std::ostream &out, const Nodemode value);
 void sendData(std::string msg);
-Nodemode nodestate;
 sf::Thread secondThread(&sendData, msg);
-
+Nodemode nodestate;
 // void pause();
 // bool paused = false;
 
@@ -37,6 +37,7 @@ int main() {
     listener.accept(tcpSocket);
   } else if (nodestate == CLIENT) {
     tcpSocket.connect(hostIp, port);
+	  port;
   }
 
   std::cout << "Current IP-address: " << hostIp.toString() << std::endl;
@@ -107,5 +108,6 @@ void sendData(std::string msg) {
     packet << msg;
 
     tcpSocket.send(packet);
+
   }
 }

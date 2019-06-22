@@ -1,6 +1,6 @@
 ﻿  AssetManager.cpp
   main.cpp
-C:\Users\Lord\source\repos\PingPong\PingPong\main.cpp(15): warning C4305: 'initializing': truncation from 'int' to 'uint16_t'
-C:\Users\Lord\source\repos\PingPong\PingPong\main.cpp(15): warning C4309: 'initializing': truncation of constant value
+C:\Users\Lord\source\repos\PingPong\PingPong\main.cpp(16): warning C4305: 'initializing': truncation from 'int' to 'uint16_t'
+C:\Users\Lord\source\repos\PingPong\PingPong\main.cpp(16): warning C4309: 'initializing': truncation of constant value
   Generating Code...
   PingPong.vcxproj -> C:\Users\Lord\source\repos\PingPong\x64\Debug\PingPong.exe
