@@ -7,23 +7,18 @@
 #include <vector>
 
 enum Nodemode : char { SERVER = 's', CLIENT = 'c' };
-// sf::RenderWindow window(sf::VideoMode(800, 600), "ping?pong!",
-//                        sf::Style::Default);
-// sf::IpAddress hostIp = sf::IpAddress("25.63.232.166");
 sf::IpAddress hostIp = sf::IpAddress::getLocalAddress();
-sf::TcpSocket tcpSocket;
-uint16_t port = 66000;
-std::size_t received;
-std::string recMsg = "Connection established SUCCESFULLY";
+sf::UdpSocket udpSocket;
+uint16_t port = 51234;
+std::string recMsg = "";
 std::string msg;
+
 std::istream &operator>>(std::istream &is, Nodemode &i);
 std::ostream &operator<<(std::ostream &out, const Nodemode value);
+
 void sendData(std::string msg);
 Nodemode nodestate;
 sf::Thread secondThread(&sendData, msg);
-
-// void pause();
-// bool paused = false;
 
 int main() {
 
@@ -31,56 +26,32 @@ int main() {
                "the app, type in 'stop' "
             << std::endl;
   std::cin >> nodestate;
+
   if (nodestate == SERVER) {
-    sf::TcpListener listener;
-    listener.listen(port);
-    listener.accept(tcpSocket);
+	  udpSocket.bind(port);
   } else if (nodestate == CLIENT) {
-    tcpSocket.connect(hostIp, port);
+	  udpSocket.bind(port);
   }
 
   std::cout << "Current IP-address: " << hostIp.toString() << std::endl;
   std::cout << "Node state: " << nodestate << std::endl;
   std::cout << recMsg << std::endl;
+
   secondThread.launch();
   while (msg != "stop") {
 
     sf::Packet packet2;
-    if (tcpSocket.receive(packet2) != sf::Socket::NotReady) {
-      packet2 >> recMsg;
-      if (recMsg != "")
-        std::cout << "Other user: " << recMsg << std::endl;
-    }
+	if (udpSocket.receive(packet2, hostIp, port) != sf::Socket::Done)
+		std::cout << "~~error receiving data" << std::endl;
+	else {
+		std::cout << "--data received" << std::endl;
+		packet2 >> recMsg;
+		if (recMsg != "")
+			std::cout << "Other user: " << recMsg << std::endl;
+	}
   }
-  /* while (window.isOpen()) {
-     sf::Event event;
-     while (window.pollEvent(event)) {
-       switch (event.type) {
-       case sf::Event::Closed:
-         window.close();
-         break;
-       case sf::Event::LostFocus:
-         pause();
-         break;
-       }
-     }
-         window.clear(sf::Color::Black);
-         window.display();
-
-   } */
   return 0;
 }
-
-// void pause() {
-//	while(paused){
-//		sf::Event event;
-//		while (window.pollEvent(event)) {
-//			if(event.type ==  sf::Event::GainedFocus){
-//				paused = false;
-//			}
-//		}
-//	}
-//}
 
 std::istream &operator>>(std::istream &is, Nodemode &i) {
   char tmp;
@@ -102,10 +73,12 @@ std::ostream &operator<<(std::ostream &out, const Nodemode value) {
 
 void sendData(std::string msg) {
   while (msg != "stop") {
+
     getline(std::cin, msg);
     sf::Packet packet;
     packet << msg;
 
-    tcpSocket.send(packet);
+	if (udpSocket.send(packet, hostIp, port) != sf::Socket::Done)
+		std::cout << "~~Could not send data" << std::endl;
   }
 }
