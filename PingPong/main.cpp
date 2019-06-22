@@ -19,8 +19,6 @@ Nodemode nodestate;
 sf::Thread secondThread(&sendData, msg);
 sf::Packet packet2;
 sf::Packet packet;
-// void pause();
-// bool paused = false;
 
 int main() {
   cout << "Type 's' for server, and 'c' for client. If you want to close "
