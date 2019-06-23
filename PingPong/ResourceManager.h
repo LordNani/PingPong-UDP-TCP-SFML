@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 class ResourceManager {
 public:
+	ResourceManager();
 	static ResourceManager* getInstance() {
 		static ResourceManager instance;
 		return &instance;
