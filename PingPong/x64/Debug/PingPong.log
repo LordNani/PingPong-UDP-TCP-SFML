@@ -1,2 +1,16 @@
-﻿  main.cpp
+﻿  Ball.cpp
+C:\Users\rigan\source\repos\PingPong-UDP-TCP-SFML\PingPong\Ball.cpp(13): warning C4244: '=': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\rigan\source\repos\PingPong-UDP-TCP-SFML\PingPong\Ball.cpp(14): warning C4244: '=': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\rigan\source\repos\PingPong-UDP-TCP-SFML\PingPong\Ball.cpp(15): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+  main.cpp
+  Generating Code...
+  LINK : C:\Users\rigan\source\repos\PingPong-UDP-TCP-SFML\x64\Debug\PingPong.exe not found or not built by the last incremental link; performing full link
   PingPong.vcxproj -> C:\Users\rigan\source\repos\PingPong-UDP-TCP-SFML\x64\Debug\PingPong.exe

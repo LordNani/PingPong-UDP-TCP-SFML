@@ -2,10 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/System.hpp>
-
+#include "Ball.h"
 #include"ResourceManager.h"
+#define width 1366
+#define height 768
 
- sf::RenderWindow window(sf::VideoMode(800, 600), "ping?pong!",
+ sf::RenderWindow window(sf::VideoMode(width, height), "ping?pong!",
                         sf::Style::Default);
  sf::Sprite testSp;
  sf::Texture tex;
@@ -14,15 +16,9 @@
  bool paused = false;
  sf::RectangleShape rect;
 int main() {
-	ResourceManager::getInstance()->addImageFromColor(200, 200, testColor, "2");
-	ResourceManager::getInstance()->addTextureFromImage(*ResourceManager::getInstance()->RequestImage("2"),"newText");
-	ResourceManager::getInstance()->addImageFromFile("test.jpg", "test");
-	ResourceManager::getInstance()->addTextureFromFile("karel1.png", "test");
-	rect.setPosition(400, 300);
-	rect.setSize(sf::Vector2f(300, 300));
-	rect.setTexture(ResourceManager::getInstance()->RequestTexture("test"));
-	testSp.setTexture(*ResourceManager::getInstance()->RequestTexture("newText"));
-	testSp.setPosition(0, 0);
+	window.setFramerateLimit(60);
+	ResourceManager::getInstance()->addTextureFromFile("ball.png", "ball");
+	Ball ball(width / 2, height / 2, true, ResourceManager::getInstance()->RequestTexture("ball"));
    while (window.isOpen()) {
      sf::Event event;
      while (window.pollEvent(event)) {
@@ -35,9 +31,13 @@ int main() {
          break;
        }
      }
-         window.clear(sf::Color::Red);
-		 window.draw(rect);
-		 window.draw(testSp);
+	 if (ball.getPosition().x < 20 || ball.getPosition().x > width - 20)
+		 ball.hit(false);
+	 if (ball.getPosition().y < 20 || ball.getPosition().y > height - 20)
+		 ball.hit(true);
+	 ball.update();
+         window.clear(sf::Color::Black);
+		 ball.draw(window);
          window.display();
 
    } 
