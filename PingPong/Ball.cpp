@@ -15,6 +15,7 @@ Ball::Ball(unsigned startX,unsigned startY,bool isFlyingRight,sf::Texture* textu
 	this->ballSp.setPosition(startX, startY);
 	this->ballSp.setOrigin(20, 20);
 	this->ballSp.setTexture(*texture);
+	this->ballSp.setScale(0.5f,0.5f);
 }
 
 
@@ -29,13 +30,20 @@ void Ball::draw(sf::RenderWindow& target) {
 }
 
 
-void Ball::update() {
-	ballSp.move(velocity);
+void Ball::update(float dt) {
+	ballSp.move(velocity*dt);
 	position = ballSp.getPosition();
 }
 
 void Ball::hit(bool horizontal) {
-
+	if (velocity.x > 0.f)
+		velocity.x += speedIncrement;
+	else 
+		velocity.x -= speedIncrement;
+	if (velocity.y > 0.f)
+		velocity.y += speedIncrement;
+	else 
+		velocity.y -= speedIncrement;
 	if (horizontal)
 		velocity.y = -velocity.y;
 	else
