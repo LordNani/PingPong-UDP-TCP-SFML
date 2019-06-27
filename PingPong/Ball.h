@@ -12,7 +12,7 @@ public:
 private: 
 	sf::Vector2f velocity;
 	sf::Vector2f position;
-	sf::Sprite ballSp;
+	sf::Sprite ballSpr;
 	const float speedIncrement = 20.f;
 	const float defaultVelocity = 200.f;
 	bool exists;

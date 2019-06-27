@@ -12,10 +12,10 @@ Ball::Ball(unsigned startX,unsigned startY,bool isFlyingRight,sf::Texture* textu
 	this->velocity.y = defaultVelocity;
 	this->position.x = startX;
 	this->position.y = startY;
-	this->ballSp.setPosition(startX, startY);
-	this->ballSp.setOrigin(20, 20);
-	this->ballSp.setTexture(*texture);
-	this->ballSp.setScale(0.5f,0.5f);
+	this->ballSpr.setPosition(startX, startY);
+	this->ballSpr.setOrigin(20, 20);
+	this->ballSpr.setTexture(*texture);
+	this->ballSpr.setScale(0.5f,0.5f);
 }
 
 
@@ -26,13 +26,13 @@ Ball::~Ball()
 
 
 void Ball::draw(sf::RenderWindow& target) {
-	target.draw(ballSp);
+	target.draw(ballSpr);
 }
 
 
 void Ball::update(float dt) {
-	ballSp.move(velocity*dt);
-	position = ballSp.getPosition();
+	ballSpr.move(velocity*dt);
+	position = ballSpr.getPosition();
 }
 
 void Ball::hit(bool horizontal) {
@@ -51,5 +51,5 @@ void Ball::hit(bool horizontal) {
 }
 
 sf::Vector2f Ball::getPosition() {
-	return position;
+	return ballSpr.getPosition();
 }
