@@ -1,16 +1,6 @@
-﻿  Ball.cpp
-C:\Users\Lord\source\repos\PingPong\PingPong\Ball.cpp(13): warning C4244: '=': conversion from 'unsigned int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\Lord\source\repos\PingPong\PingPong\Ball.cpp(14): warning C4244: '=': conversion from 'unsigned int' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-C:\Users\Lord\source\repos\PingPong\PingPong\Ball.cpp(15): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  Game.cpp
-  main.cpp
+﻿  Game.cpp
+C:\Users\rigan\source\repos\PingPong-UDP-TCP-SFML\PingPong\Game.cpp(75): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\rigan\source\repos\PingPong-UDP-TCP-SFML\PingPong\Game.cpp(77): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+  Pad.cpp
   Generating Code...
-  PingPong.vcxproj -> C:\Users\Lord\source\repos\PingPong\x64\Debug\PingPong.exe
+  PingPong.vcxproj -> C:\Users\rigan\source\repos\PingPong-UDP-TCP-SFML\x64\Debug\PingPong.exe
